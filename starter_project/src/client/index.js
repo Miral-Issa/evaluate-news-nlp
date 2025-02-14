@@ -9,7 +9,7 @@ import './styles/resets.scss'
 
 console.log(checkForName);
 
-alert("I EXIST")
+//alert("I EXIST")
 // console.log("CHANGE!!");
 
 // sass files
