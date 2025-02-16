@@ -75,6 +75,7 @@ const updateUI = async () => {
       tempDiv.appendChild(sentiment);
       tempDiv.appendChild(text);
 
+      document.getElementById('results').innerHTML = "";
       document.getElementById('results').appendChild(tempDiv);
   
     }catch(error){
