@@ -52,13 +52,35 @@ function handleSubmit(event) {
         // If the URL is valid, send it to the server using the serverURL constant above
         if(validation === true)
         {
-            sendURL(serverURL, {"url": formText});
+            sendURL(serverURL, {"url": formText}).then(updateUI);
         }else{
             alert("unvalid url")
         }
       
 }
 
+//update UI
+const updateUI = async () => {
+    const request = await fetch('http://localhost:8000/sentiment');
+  
+    try{
+      const allData = await request.json();
+      console.log(allData);
+      const sentiment= document.createElement("p");
+      sentiment.textContent = allData.sentiment;
+      const text = document.createElement("p");
+      text.textContent =  allData.text;
+
+      const tempDiv = document.createElement("div");
+      tempDiv.appendChild(sentiment);
+      tempDiv.appendChild(text);
+
+      document.getElementById('results').appendChild(tempDiv);
+  
+    }catch(error){
+      console.log("error", error);
+    }
+  }
 // Export the handleSubmit function
 export { handleSubmit };
 

@@ -1,3 +1,5 @@
+sentiment_data = {};
+
 // Import required dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -34,7 +36,7 @@ async function scrapeTextFromURL(url) {
 
         // Extract and return the first 200 characters of the text
         const trimmedText = text.slice(0, 200);
-        //console.log(`Extracted Text (200 characters):\n${trimmedText}\n--- End of Text Preview ---`);
+        console.log(`Extracted Text (200 characters):\n${trimmedText}\n--- End of Text Preview ---`);
         return trimmedText;
     } catch (error) {
         //console.error('Error while scraping text from the URL:', error.message);
@@ -56,29 +58,28 @@ app.post('/analyze-url', async (req, res) => {
     try {
         // Step 1: Scrape text from the provided URL
         const text = await scrapeTextFromURL(url);
-        console.log(text);
 
-        // if (!text) {
-        //     return res.status(400).json({ error: 'No text content found at the provided URL' });
-        // }
+        if (!text) {
+            return res.status(400).json({ error: 'No text content found at the provided URL' });
+        }
 
-        // // Step 2: Connect to the AWS NLP API
-        // // --- Learner Task: Add the code to send the extracted text to the AWS NLP API below ---
-        // // Use `axios.post` to send a POST request to the API.
-        // // The endpoint URL is: https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer
-        // // Send the `text` as part of the request body.
+        // Step 2: Connect to the AWS NLP API
+        // --- Learner Task: Add the code to send the extracted text to the AWS NLP API below ---
+        // Use `axios.post` to send a POST request to the API.
+        // The endpoint URL is: https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer
+        // Send the `text` as part of the request body.
 
-        // /*
-        // Example Code:
-        // const response = await axios.post('https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer', { text });
-        // return res.json(response.data); // Send the NLP results back to the client
-        // */
-        // const APIurl = "https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer";
-        // const response = await axios.post(APIurl, {text});
+        /*
+        Example Code:
+        const response = await axios.post('https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer', { text });
+        return res.json(response.data); // Send the NLP results back to the client
+        */
+        const APIurl = "https://kooye7u703.execute-api.us-east-1.amazonaws.com/NLPAnalyzer";
+        const response = await axios.post(APIurl, {text});
 
-        // // Placeholder response for learners to complete
-        // //return res.json({ message: 'NLP analysis result will be here. Complete the API call above!' });
-        // return res.json(response.data);
+        // Placeholder response for learners to complete
+        //return res.json({ message: 'NLP analysis result will be here. Complete the API call above!' });
+        return res.json(response.data);
     } catch (error) {
         //console.error('Error during URL processing or API request:', error.message);
         return res.status(500).json({ error: 'Failed to analyze the URL' });
@@ -93,15 +94,23 @@ app.post('/api', async(req, res) =>
 
     //console.log(dataGot);
     const response = await axios.post("http://localhost:8000/analyze-url", dataGot);
-    
+    sentiment_data = response.data;
+    console.log(sentiment_data);
+
     res.send('POST received');
-    return res.json(response.data);
+    //return res.json(response.data);
 })
 
 // Default route
 app.get('/', (req, res) => {
     res.send("This is the server API page. You may access its services via the client app.");
 });
+
+app.get('/sentiment',function(req, res)
+{
+    console.log("got a GET request for the sentiment_data")
+    res.send(sentiment_data);
+})
 
 // Start the server
 app.listen(8000, () => {
