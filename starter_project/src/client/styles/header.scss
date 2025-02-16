@@ -1,5 +1,18 @@
 header {
-    display: flex;
+    display: flex !important; //the base file is overwritting this
     justify-content: space-between;
     padding: 10px 40px;
+    align-items: center;
+}
+
+
+
+.logo{
+    font-size: 1.5em;
+    margin-left: 0.5em;
+}
+
+.navi{
+    font-size: 1.5em;
+    margin-right: 0.5em;
 }
