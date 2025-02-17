@@ -10,9 +10,11 @@ function checkForName(inputText) {
 
     if(names.includes(inputText)) {
         alert("Welcome, Captain!");
+        return true;
     }
     else {
         alert("Enter a valid captain name");
+        return false;
     }
 }
 

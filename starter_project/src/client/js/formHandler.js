@@ -84,4 +84,5 @@ const updateUI = async () => {
   }
 // Export the handleSubmit function
 export { handleSubmit };
+export { isValidUrl };
 
